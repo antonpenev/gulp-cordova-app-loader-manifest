@@ -43,17 +43,11 @@ var calManifest = function calManifest(options) {
             version: hasher.update(file.contents).digest('hex')
         };
 
-        var i, pattern;
-        for (i = 0; i < options.load.length; i++) {
-            pattern = options.load[i];
-            if (pattern.indexOf(filename) > -1) {
-                manifest.load.push(pattern.split(options.prefixSplit).pop())
-            }
-        }
         done();
     };
 
     stream._flush = function (done) {
+        manifest.load = options.load;
         var file = new gutil.File({
             path: 'manifest.json',
             contents: new Buffer(JSON.stringify(manifest, null, 4))
